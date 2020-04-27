@@ -3,13 +3,14 @@
 namespace App\GraphQL\Queries;
 
 use Closure;
+use Arr;
+
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
-use App\Models\Book;
-use App\Services\AuthorService;
+use App\Services\BookService;
 
 class BooksQuery extends Query
 {
@@ -42,38 +43,11 @@ class BooksQuery extends Query
 
     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        $authorService = new AuthorService();
-        $query = Book::with("author");
-        $joinAuthor = false; 
+        $bookService = new BookService;
 
-        if(isset($args["orderBy"])) {
-            switch($args["orderBy"]) {
-                case "TITLE_DESC": $query->orderBy("title", "DESC"); break;
-                case "TITLE_ASC": $query->orderBy("title", "ASC"); break;
-                case "AUTHOR_DESC": 
-                    $query->orderByAuthor("DESC");
-                    $joinAuthor = true;  
-                    break;
-                case "AUTHOR_ASC": 
-                    $query->orderByAuthor("ASC"); 
-                    $joinAuthor = true; 
-                    break;
-            }
-        }
+        $orderBy = $args["orderBy"] ?? "TITLE_ASC";
+        $filters = Arr::only($args, ["title", "author"]);
 
-        if(isset($args["title"])) {
-            $query->where("title", "LIKE", "{$args['title']}%");
-        }
-
-        if(isset($args["author"])) {
-            $authorService->modifyQueryWhereAuthorLike($query, $args["author"]);
-            $joinAuthor = true; 
-        }
-
-        if($joinAuthor) {
-            $query->joinAuthor();
-        }
-        
-        return $query->get();
+        return $bookService->get($filters, $orderBy);
     }
 }

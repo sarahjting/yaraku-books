@@ -9,8 +9,7 @@ use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\Mutation;
 
-use App\Models\Book;
-use App\Models\Author; 
+use App\Services\BookService; 
 
 class DeleteBookMutation extends Mutation
 {
@@ -35,6 +34,8 @@ class DeleteBookMutation extends Mutation
 
     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        return Book::where("id", $args["id"])->delete();
+        $bookService = new BookService;
+        $book = $bookService->firstWithId($args["id"]);
+        return $book && $bookService->delete($book);
     }
 }

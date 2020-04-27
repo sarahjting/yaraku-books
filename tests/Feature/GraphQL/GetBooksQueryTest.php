@@ -30,7 +30,7 @@ class GetBooksQueryTest extends TestCase
         $response = $this->callGraphQL("query{ books{ id title } }");
 
         $response->assertStatus(200);
-        $this->assertGraphQLFragment($response, ["books" => $books->map(function($el) {
+        $this->assertGraphQLFragment($response, ["books" => $books->sortBy("title")->values()->map(function($el) {
             return $el->only("id", "title");
         })]);
     }
@@ -42,7 +42,7 @@ class GetBooksQueryTest extends TestCase
         $response = $this->callGraphQL("query{ books{ id title author{name} } }");
 
         $response->assertStatus(200);
-        $this->assertGraphQLFragment($response, ["books" => $books->map(function($el) {
+        $this->assertGraphQLFragment($response, ["books" => $books->sortBy("title")->values()->map(function($el) {
             return $el->only(["id", "title"]) + ["author" => $el->author->only("name")];
         })]);
     }
