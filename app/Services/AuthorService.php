@@ -10,6 +10,14 @@ class AuthorService {
         return Author::create($this->sanitizeInput($data));
     }
 
+
+    public function firstWithName($name) {
+        $data = $this->sanitizeInput(["name" => $name]);
+        return Author::where("given_name", $data['given_name'])
+            ->where("family_name", $data['family_name'])
+            ->first();
+    }
+
     public function getByName($name) {
         if(strpos($name, " ") === false) {
             return Author::where(function($query) use($name) {

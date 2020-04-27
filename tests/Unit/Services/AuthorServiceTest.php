@@ -25,6 +25,16 @@ class AuthorServiceTest extends TestCase
         $this->assertDatabaseHas("authors", ["given_name" => $result->given_name]);
     }
 
+    public function test_can_find_author_by_name()
+    {
+        $author = factory(\App\Models\Author::class, 5)->create()[1];
+
+        $result = $this->authorService->firstWithName("{$author->given_name} {$author->family_name}");
+
+        $this->assertNotNull($result);
+        $this->assertEquals($result->id, $author->id);
+    }
+
     public function test_can_find_authors_by_partial_name()
     {
         $author = factory(\App\Models\Author::class, 5)->create()[1];
