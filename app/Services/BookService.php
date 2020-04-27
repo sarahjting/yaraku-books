@@ -8,6 +8,7 @@ use App\Models\Book;
 use App\Services\AuthorService; 
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 class BookService {
 
@@ -35,6 +36,15 @@ class BookService {
         $query = Book::with("author");
         $joinAuthor = false; 
 
+        $this->modifyQueryOrderBy($query, $orderBy, $joinAuthor);
+        $this->modifyQueryFilterBy($query, $filters, $joinAuthor);
+
+        if($joinAuthor) $query->joinAuthor();
+
+        return $query->get();
+    }
+
+    public function modifyQueryOrderBy(Builder $query, string $orderBy, bool &$joinAuthor = null): Builder {
         switch($orderBy) {
             case "TITLE_DESC": $query->orderBy("title", "DESC"); break;
             case "TITLE_ASC": $query->orderBy("title", "ASC"); break;
@@ -47,7 +57,9 @@ class BookService {
                 $joinAuthor = true; 
                 break;
         }
-
+        return $query; 
+    }
+    public function modifyQueryFilterBy(Builder $query, array $filters, bool &$joinAuthor = null): Builder {
         if(isset($filters["title"])) {
             $query->where("title", "LIKE", "{$filters['title']}%");
         }
@@ -57,11 +69,7 @@ class BookService {
             $joinAuthor = true; 
         }
 
-        if($joinAuthor) {
-            $query->joinAuthor();
-        }
-
-        return $query->get();
+        return $query; 
     }
 
 }
