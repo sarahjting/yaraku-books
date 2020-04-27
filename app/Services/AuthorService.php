@@ -36,28 +36,28 @@ class AuthorService {
 
     public function getByName(string $name):? Collection {
         $authors = Author::query();
-        $this->modifyQueryWhereAuthorLike($authors, $name);
+        $this->modifyQueryWhereNameLike($authors, $name);
         return $authors->get();
     }
 
-    public function modifyQueryWhereAuthorLike(Builder $query, string $name): Builder {
+    public function modifyQueryWhereNameLike(Builder $query, string $name): Builder {
         if(strpos($name, " ") === false) {
-            return $this->modifyQueryWhereAuthorNamesLike($query, $name);
+            return $this->modifyQueryWhereEitherNameLike($query, $name);
         } else {
             $data = $this->sanitizeInput(["name" => $name]);
-            return $this->modifyQueryWhereAuthorFullNameLike($query, $data["given_name"], $data["family_name"]);
+            return $this->modifyQueryWhereFullNameLike($query, $data["given_name"], $data["family_name"]);
         }
     }
 
 
-    public function modifyQueryWhereAuthorNamesLike(Builder $query, string $name): Builder {
+    public function modifyQueryWhereEitherNameLike(Builder $query, string $name): Builder {
         return $query->where(function($query) use($name) {
             $query->where("given_name", "LIKE", "{$name}%")
                 ->orWhere("family_name", "LIKE", "{$name}%");
         });
     }
 
-    public function modifyQueryWhereAuthorFullNameLike(Builder $query, string $givenName, string $familyName): Builder {
+    public function modifyQueryWhereFullNameLike(Builder $query, string $givenName, string $familyName): Builder {
         return $query->where("given_name", $givenName)->where("family_name", "LIKE", "{$familyName}%");
     }
 

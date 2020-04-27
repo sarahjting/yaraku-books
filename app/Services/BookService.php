@@ -65,7 +65,7 @@ class BookService {
         }
 
         if(isset($filters["author"])) {
-            $this->authorService->modifyQueryWhereAuthorLike($query, $filters["author"]);
+            $this->authorService->modifyQueryWhereNameLike($query, $filters["author"]);
             $joinAuthor = true; 
         }
 
