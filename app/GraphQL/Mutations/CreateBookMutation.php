@@ -22,7 +22,7 @@ class CreateBookMutation extends Mutation
 
     public function type(): Type
     {
-        return GraphQL::type('book');
+        return GraphQL::type('Book');
     }
 
     public function args(): array

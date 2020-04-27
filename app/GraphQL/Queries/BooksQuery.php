@@ -18,7 +18,7 @@ class BooksQuery extends Query
 
     public function type(): Type
     {
-        return Type::listOf(GraphQL::type('book'));
+        return Type::listOf(GraphQL::type('Book'));
     }
 
     public function args(): array

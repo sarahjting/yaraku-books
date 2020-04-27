@@ -28,7 +28,7 @@ class BookType extends GraphQLType
                 'description' => 'The title of the book',
             ],
             'author' => [
-                'type' => GraphQL::type('author'),
+                'type' => GraphQL::type('Author'),
                 'description' => 'The author of the book',
                 'selectable' => false
             ]

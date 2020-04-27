@@ -30,9 +30,9 @@ return [
     ],
 
     'types' => [
-        'book' => \App\GraphQL\Types\BookType::class,
+        'Book' => \App\GraphQL\Types\BookType::class,
         'BookInput' => \App\GraphQL\Inputs\BookInput::class,
-        'author' => \App\GraphQL\Types\AuthorType::class,
+        'Author' => \App\GraphQL\Types\AuthorType::class,
         'AuthorInput' => \App\GraphQL\Inputs\AuthorInput::class,
     ],
 
