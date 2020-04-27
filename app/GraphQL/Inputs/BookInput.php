@@ -20,12 +20,12 @@ class BookInput extends InputType
             'title' => [
                 'name' => 'title',
                 'description' => 'The title of the book',
-                'type' => Type::string(),
+                'type' => Type::nonNull(Type::string()),
             ],
             'author' => [
                 'name' => 'author',
                 'description' => 'The name of the author',
-                'type' => GraphQL::type("AuthorInput"),
+                'type' => Type::nonNull(GraphQL::type("AuthorInput")),
             ],
         ];
     }
