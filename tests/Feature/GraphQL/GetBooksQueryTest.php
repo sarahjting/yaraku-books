@@ -27,11 +27,23 @@ class GetBooksQueryTest extends TestCase
     {
         $books = factory(\App\Models\Book::class, 10)->create();
 
-        $response = $this->callGraphQL("query{ books{ id } }");
+        $response = $this->callGraphQL("query{ books{ id title } }");
 
         $response->assertStatus(200);
         $this->assertGraphQLFragment($response, ["books" => $books->map(function($el) {
-            return $el->only("id");
+            return $el->only("id", "title");
+        })]);
+    }
+
+    public function test_can_retrieve_authors_of_books()
+    {
+        $books = factory(\App\Models\Book::class, 10)->create();
+
+        $response = $this->callGraphQL("query{ books{ id title author{name} } }");
+
+        $response->assertStatus(200);
+        $this->assertGraphQLFragment($response, ["books" => $books->map(function($el) {
+            return $el->only(["id", "title"]) + ["author" => $el->author->only("name")];
         })]);
     }
 }

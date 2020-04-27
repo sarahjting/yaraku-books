@@ -6,6 +6,8 @@ use App\Models\Book;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
+use GraphQL;
+
 class BookType extends GraphQLType
 {
     protected $attributes = [
@@ -24,6 +26,11 @@ class BookType extends GraphQLType
             'title' => [
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'The title of the book',
+            ],
+            'author' => [
+                'type' => GraphQL::type('author'),
+                'description' => 'The author of the book',
+                'selectable' => false
             ]
         ];
     }

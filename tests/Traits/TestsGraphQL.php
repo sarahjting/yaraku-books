@@ -15,8 +15,9 @@ trait TestsGraphQL
 
     protected function assertGraphQLFragment(Response $response, array $expected)
     {
-        $response->assertJsonFragment([
-            "data" => $expected
-        ]);
+        $this->assertSame(
+            $response->getContent(), 
+            json_encode(["data" => $expected])
+        );
     }
 }

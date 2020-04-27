@@ -29,6 +29,7 @@ return [
 
     'types' => [
         'book' => \App\GraphQL\Types\BookType::class,
+        'author' => \App\GraphQL\Types\AuthorType::class,
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request

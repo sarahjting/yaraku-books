@@ -28,6 +28,6 @@ class BooksQuery extends Query
 
     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        return Book::all()->toArray();
+        return Book::with("author")->get();
     }
 }
