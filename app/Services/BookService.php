@@ -12,19 +12,23 @@ use Illuminate\Database\Eloquent\Builder;
 
 class BookService {
 
-    public function __construct(AuthorService $authorService = null) {
+    public function __construct(AuthorService $authorService = null) 
+    {
         $this->authorService = $authorService ?: new AuthorService;
     }
 
-    public function firstWithId(int $id):? Book {
+    public function firstWithId(int $id):? Book 
+    {
         return Book::where('id', $id)->first();
     }
 
-    public function delete(Book $book): bool {
+    public function delete(Book $book): bool 
+    {
         return Book::where("id", $book->id)->delete();
     }
 
-    public function create(array $input): Book {
+    public function create(array $input): Book 
+    {
         $author = $this->authorService->firstOrCreate($input["author"]);
         return Book::create([
             "title" => $input["title"],
@@ -32,7 +36,8 @@ class BookService {
         ]);
     }
 
-    public function get(array $filters = [], string $orderBy = "TITLE_ASC"): Collection {
+    public function get(array $filters = [], string $orderBy = "TITLE_ASC"): Collection 
+    {
         $query = Book::with("author");
         $joinAuthor = false; 
 
@@ -44,7 +49,8 @@ class BookService {
         return $query->get();
     }
 
-    public function modifyQueryOrderBy(Builder $query, string $orderBy, bool &$joinAuthor = null): Builder {
+    public function modifyQueryOrderBy(Builder $query, string $orderBy, bool &$joinAuthor = null): Builder 
+    {
         switch($orderBy) {
             case "TITLE_DESC": $query->orderBy("title", "DESC"); break;
             case "TITLE_ASC": $query->orderBy("title", "ASC"); break;
@@ -59,7 +65,9 @@ class BookService {
         }
         return $query; 
     }
-    public function modifyQueryFilterBy(Builder $query, array $filters, bool &$joinAuthor = null): Builder {
+
+    public function modifyQueryFilterBy(Builder $query, array $filters, bool &$joinAuthor = null): Builder 
+    {
         if(isset($filters["title"])) {
             $query->where("title", "LIKE", "{$filters['title']}%");
         }

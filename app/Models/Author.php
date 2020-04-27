@@ -10,7 +10,8 @@ class Author extends Model
         'given_name', 'family_name'
     ];
 
-    public function getNameAttribute() {
+    public function getNameAttribute() 
+    {
         return "{$this->given_name} {$this->family_name}";
     }
 }

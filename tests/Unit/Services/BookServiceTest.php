@@ -14,7 +14,8 @@ class BookServiceTest extends TestCase
 {
     use RefreshDatabase; 
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->authorService = Mockery::mock(AuthorService::class);
         $this->bookService = new BookService($this->authorService); 

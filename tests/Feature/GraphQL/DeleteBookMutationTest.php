@@ -12,7 +12,8 @@ class DeleteBookMutationTest extends TestCase
 {
     use RefreshDatabase, WithFaker, TestsGraphQL;
 
-    private function deleteBookMutationSignature() {
+    private function deleteBookMutationSignature() 
+    {
         return 'mutation deleteBook($id: Int!) { deleteBook(id: $id) }';
     }
 

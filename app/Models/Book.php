@@ -10,16 +10,19 @@ class Book extends Model
         'title', 'author_id'
     ];
 
-    public function author() {
+    public function author() 
+    {
         return $this->belongsTo(\App\Models\Author::class);
     }
 
-    public function scopeOrderByAuthor($query, $orderByDirection) {
+    public function scopeOrderByAuthor($query, $orderByDirection) 
+    {
         $query->orderBy("authors.family_name", $orderByDirection)
             ->orderBy("authors.family_name", $orderByDirection);
     }
 
-    public function scopeJoinAuthor($query) {
+    public function scopeJoinAuthor($query) 
+    {
         $query->select("books.*")
             ->join("authors", "authors.id", "books.author_id");
     }

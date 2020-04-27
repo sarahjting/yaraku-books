@@ -13,7 +13,8 @@ class CreateBookMutationTest extends TestCase
 {
     use RefreshDatabase, WithFaker, TestsGraphQL;
 
-    private function createBookMutationSignature() {
+    private function createBookMutationSignature() 
+    {
         return 'mutation createBook($book: BookInput!) { createBook(book: $book){ title author{name} } }';
     }
 

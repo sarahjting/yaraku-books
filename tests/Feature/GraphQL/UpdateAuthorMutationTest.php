@@ -13,7 +13,8 @@ class UpdateAuthorMutationTest extends TestCase
 {
     use RefreshDatabase, WithFaker, TestsGraphQL;
 
-    private function updateAuthorMutationSignature() {
+    private function updateAuthorMutationSignature() 
+    {
         return 'mutation updateAuthor($id: Int!, $author: AuthorInput!) { updateAuthor(id: $id, author: $author){ name } }';
     }
 

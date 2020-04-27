@@ -9,7 +9,8 @@ class AuthorServiceTest extends TestCase
 {
     use RefreshDatabase; 
 
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->authorService = new \App\Services\AuthorService; 
     }
