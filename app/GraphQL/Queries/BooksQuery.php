@@ -8,10 +8,12 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
+use App\Models\Book;
+
 class BooksQuery extends Query
 {
     protected $attributes = [
-        'name' => 'Books query'
+        'name' => 'Books query',
     ];
 
     public function type(): Type
@@ -26,6 +28,6 @@ class BooksQuery extends Query
 
     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        return [];
+        return Book::all()->toArray();
     }
 }
