@@ -12,3 +12,12 @@ $factory->define(\App\Models\Book::class, function (Faker $faker) {
         }
     ];
 });
+
+$factory->state(\App\Models\Book::class, "raw", function (Faker $faker) {
+    return [
+        "title" => $faker->sentence(3),
+        "author" => [
+            "name" => $faker->name()
+        ],
+    ];
+});

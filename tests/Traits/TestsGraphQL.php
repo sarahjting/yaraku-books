@@ -6,10 +6,11 @@ use \Illuminate\Testing\TestResponse as Response;
 
 trait TestsGraphQL
 {
-    protected function callGraphQL($query) :Response
+    protected function callGraphQL($query, array $variables = []) :Response
     { 
         return $this->postJson("graphql", [
             "query" => $query,
+            "variables" => $variables, 
         ]);
     }
 

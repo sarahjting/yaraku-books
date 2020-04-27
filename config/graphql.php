@@ -21,7 +21,9 @@ return [
             'query' => [
                 "books" => \App\GraphQL\Queries\BooksQuery::class,
             ],
-            'mutation' => [],
+            'mutation' => [
+                "createBook" => \App\GraphQL\Mutations\CreateBookMutation::class,
+            ],
             'middleware' => [],
             'method' => ['get', 'post'],
         ],
@@ -29,7 +31,9 @@ return [
 
     'types' => [
         'book' => \App\GraphQL\Types\BookType::class,
+        'BookInput' => \App\GraphQL\Inputs\BookInput::class,
         'author' => \App\GraphQL\Types\AuthorType::class,
+        'AuthorInput' => \App\GraphQL\Inputs\AuthorInput::class,
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request
