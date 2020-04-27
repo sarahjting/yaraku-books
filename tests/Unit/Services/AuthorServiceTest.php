@@ -17,7 +17,7 @@ class AuthorServiceTest extends TestCase
     public function test_can_create_author()
     {
         $rawAuthor = factory(\App\Models\Author::class)->states("raw")->raw();
-        
+
         $result = $this->authorService->create($rawAuthor);
 
         $this->assertNotNull($result);
@@ -25,22 +25,23 @@ class AuthorServiceTest extends TestCase
         $this->assertDatabaseHas("authors", ["given_name" => $result->given_name]);
     }
 
-    public function test_can_find_author_by_name()
+    public function test_can_find_authors_by_partial_name()
     {
-        $author = factory(\App\Models\Author::class, 5)->create()[0];
+        $author = factory(\App\Models\Author::class, 5)->create()[1];
 
         $results = [
-            $this->authorService->firstWithName($author->given_name),
-            $this->authorService->firstWithName($author->family_name),
-            $this->authorService->firstWithName("{$author->given_name} {$author->family_name}"),
-            $this->authorService->firstWithName(substr($author->given_name, 0, 5)),
-            $this->authorService->firstWithName(substr($author->family_name, 0, 5)),
-            $this->authorService->firstWithName("{$author->given_name} " . substr($author->family_name, 0, 5)),
+            $this->authorService->getByName($author->given_name),
+            $this->authorService->getByName($author->family_name),
+            $this->authorService->getByName("{$author->given_name} {$author->family_name}"),
+            $this->authorService->getByName(substr($author->given_name, 0, 5)),
+            $this->authorService->getByName(substr($author->family_name, 0, 5)),
+            $this->authorService->getByName("{$author->given_name} " . substr($author->family_name, 0, 5)),
         ];
 
         foreach($results as $result) {
             $this->assertNotNull($result);
-            $this->assertEquals($result->id, $author->id);
+            $this->assertEquals($result[0]->id, $author->id);
         }
+    }
     }
 }
