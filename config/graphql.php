@@ -23,6 +23,7 @@ return [
             ],
             'mutation' => [
                 "createBook" => \App\GraphQL\Mutations\CreateBookMutation::class,
+                "deleteBook" => \App\GraphQL\Mutations\DeleteBookMutation::class,
             ],
             'middleware' => [],
             'method' => ['get', 'post'],
