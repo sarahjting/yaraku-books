@@ -9,6 +9,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
 use App\Models\Book;
+use App\Services\AuthorService;
 
 class BooksQuery extends Query
 {
@@ -32,11 +33,16 @@ class BooksQuery extends Query
                 'name' => 'title', 
                 'type' => Type::string(),
             ],
+            'author' => [
+                'name' => 'author', 
+                'type' => Type::string(),
+            ],
         ];
     }
 
     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
+        $authorService = new AuthorService();
         $query = Book::with("author");
         $joinAuthor = false; 
 
@@ -59,7 +65,15 @@ class BooksQuery extends Query
             $query->where("title", "LIKE", "{$args['title']}%");
         }
 
-        if($joinAuthor) $query->joinAuthor();
+        if(isset($args["author"])) {
+            $authorService->modifyQueryWhereAuthorLike($query, $args["author"]);
+            $joinAuthor = true; 
+        }
+
+        if($joinAuthor) {
+            $query->joinAuthor();
+        }
+        
         return $query->get();
     }
 }

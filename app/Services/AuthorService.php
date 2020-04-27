@@ -34,16 +34,21 @@ class AuthorService {
     }
 
     public function getByName(string $name):? Collection {
+        $authors = Author::query();
+        $this->modifyQueryWhereAuthorLike($authors, $name);
+        return $authors->get();
+    }
+
+    public function modifyQueryWhereAuthorLike($query, $name) {
         if(strpos($name, " ") === false) {
-            return Author::where(function($query) use($name) {
+            return $query->where(function($query) use($name) {
                 $query->where("given_name", "LIKE", "{$name}%")
                     ->orWhere("family_name", "LIKE", "{$name}%");
-            })->get();
+            });
         } else {
             $data = $this->sanitizeInput(["name" => $name]);
-            return Author::where("given_name", $data['given_name'])
-                    ->where("family_name", "LIKE", "{$data['family_name']}%")
-                    ->get();
+            return $query->where("given_name", $data['given_name'])
+                    ->where("family_name", "LIKE", "{$data['family_name']}%");
         }
     }
 

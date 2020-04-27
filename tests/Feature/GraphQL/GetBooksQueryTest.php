@@ -94,4 +94,22 @@ class GetBooksQueryTest extends TestCase
             $this->assertEquals(count($response["data"]["books"]), 1);
         }
     }
+
+    public function test_can_retrieve_all_books_filtered_by_author()
+    {
+        $book = factory(\App\Models\Book::class, 10)->create()[5];
+
+        $responses = [
+            $this->callGraphQL("query{ books(author: \"{$book->author->given_name}\"){ id title } }"),
+            $this->callGraphQL("query{ books(author: \"" . substr($book->author->given_name, 0, 5) . "\"){ id title } }"),
+            $this->callGraphQL("query{ books(author: \"{$book->author->family_name}\"){ id title } }"),
+            $this->callGraphQL("query{ books(author: \"" . substr($book->author->family_name, 0, 5) . "\"){ id title } }"),
+            $this->callGraphQL("query{ books(author: \"{$book->author->given_name} {$book->author->family_name}\"){ id title } }"),
+            $this->callGraphQL("query{ books(author: \"{$book->author->given_name} " . substr($book->author->family_name, 0, 5) . "\"){ id title } }"),
+        ];
+        
+        foreach($responses as $response) {
+            $this->assertEquals(count($response["data"]["books"]), 1);
+        }
+    }
 }

@@ -23,4 +23,5 @@ class Book extends Model
         $query->select("books.*")
             ->join("authors", "authors.id", "books.author_id");
     }
+
 }
