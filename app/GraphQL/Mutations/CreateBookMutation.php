@@ -30,7 +30,7 @@ class CreateBookMutation extends Mutation
         return [
             'book' => [
                 'name' => 'book', 
-                'type' => GraphQL::type('BookInput'),
+                'type' => Type::nonNull(GraphQL::type('BookInput')),
             ],
         ];
     }
