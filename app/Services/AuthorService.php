@@ -42,15 +42,23 @@ class AuthorService {
 
     public function modifyQueryWhereAuthorLike(Builder $query, string $name): Builder {
         if(strpos($name, " ") === false) {
-            return $query->where(function($query) use($name) {
-                $query->where("given_name", "LIKE", "{$name}%")
-                    ->orWhere("family_name", "LIKE", "{$name}%");
-            });
+            return $this->modifyQueryWhereAuthorNamesLike($query, $name);
         } else {
             $data = $this->sanitizeInput(["name" => $name]);
-            return $query->where("given_name", $data['given_name'])
-                    ->where("family_name", "LIKE", "{$data['family_name']}%");
+            return $this->modifyQueryWhereAuthorFullNameLike($query, $data["given_name"], $data["family_name"]);
         }
+    }
+
+
+    public function modifyQueryWhereAuthorNamesLike(Builder $query, string $name): Builder {
+        return $query->where(function($query) use($name) {
+            $query->where("given_name", "LIKE", "{$name}%")
+                ->orWhere("family_name", "LIKE", "{$name}%");
+        });
+    }
+
+    public function modifyQueryWhereAuthorFullNameLike(Builder $query, string $givenName, string $familyName): Builder {
+        return $query->where("given_name", $givenName)->where("family_name", "LIKE", "{$familyName}%");
     }
 
     public function sanitizeInput(array $input): array {
