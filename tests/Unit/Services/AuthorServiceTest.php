@@ -14,6 +14,17 @@ class AuthorServiceTest extends TestCase
         $this->authorService = new \App\Services\AuthorService; 
     }
 
+    public function test_can_create_author()
+    {
+        $rawAuthor = factory(\App\Models\Author::class)->states("raw")->raw();
+        
+        $result = $this->authorService->create($rawAuthor);
+
+        $this->assertNotNull($result);
+        $this->assertEquals($result->name, $rawAuthor["name"]);
+        $this->assertDatabaseHas("authors", ["given_name" => $result->given_name]);
+    }
+
     public function test_can_find_author_by_name()
     {
         $author = factory(\App\Models\Author::class, 5)->create()[0];
