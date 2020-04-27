@@ -23,11 +23,33 @@ class BooksQuery extends Query
 
     public function args(): array
     {
-        return [];
+        return [
+            'orderBy' => [
+                'name' => 'orderBy', 
+                'type' => GraphQL::type('BooksOrderBy'),
+            ],
+        ];
     }
 
     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        return Book::with("author")->get();
+        $query = Book::with("author");
+        $joinAuthor = false; 
+        if(isset($args["orderBy"])) {
+            switch($args["orderBy"]) {
+                case "TITLE_DESC": $query->orderBy("title", "DESC"); break;
+                case "TITLE_ASC": $query->orderBy("title", "ASC"); break;
+                case "AUTHOR_DESC": 
+                    $query->orderByAuthor("DESC");
+                    $joinAuthor = true;  
+                    break;
+                case "AUTHOR_ASC": 
+                    $query->orderByAuthor("ASC"); 
+                    $joinAuthor = true; 
+                    break;
+            }
+        }
+        if($joinAuthor) $query->joinAuthor();
+        return $query->get();
     }
 }

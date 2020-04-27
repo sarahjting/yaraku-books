@@ -34,6 +34,7 @@ return [
     'types' => [
         'Book' => \App\GraphQL\Types\BookType::class,
         'BookInput' => \App\GraphQL\Inputs\BookInput::class,
+        'BooksOrderBy' => \App\GraphQL\Types\BooksOrderByType::class,
         'Author' => \App\GraphQL\Types\AuthorType::class,
         'AuthorInput' => \App\GraphQL\Inputs\AuthorInput::class,
     ],
