@@ -12,6 +12,10 @@ class AuthorService {
         return Author::create($this->sanitizeInput($data));
     }
 
+    public function update(Author $author, array $data) {
+        return $author->update($this->sanitizeInput($data));
+    }
+
     public function firstOrCreate(array $data): Author {
         $author = $this->firstWithName($data["name"]);
         if($author === null) $author = $this->create($data);

@@ -18,7 +18,7 @@ class AuthorInput extends InputType
             'name' => [
                 'name' => 'name',
                 'description' => 'The name of the author',
-                'type' => Type::string(),
+                'type' => Type::nonNull(Type::string()),
             ],
         ];
     }
