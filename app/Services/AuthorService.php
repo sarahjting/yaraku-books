@@ -18,6 +18,10 @@ class AuthorService {
         return $author;
     }
 
+    public function firstWithId(int $id):? Author {
+        return Author::where('id', $id)->first();
+    }
+
     public function firstWithName(string $name):? Author {
         $data = $this->sanitizeInput(["name" => $name]);
         return Author::where("given_name", $data['given_name'])
