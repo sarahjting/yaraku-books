@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Author;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 class AuthorService {
 
@@ -12,7 +13,7 @@ class AuthorService {
         return Author::create($this->sanitizeInput($data));
     }
 
-    public function update(Author $author, array $data) {
+    public function update(Author $author, array $data): bool {
         return $author->update($this->sanitizeInput($data));
     }
 
@@ -39,7 +40,7 @@ class AuthorService {
         return $authors->get();
     }
 
-    public function modifyQueryWhereAuthorLike($query, $name) {
+    public function modifyQueryWhereAuthorLike(Builder $query, string $name): Builder {
         if(strpos($name, " ") === false) {
             return $query->where(function($query) use($name) {
                 $query->where("given_name", "LIKE", "{$name}%")
