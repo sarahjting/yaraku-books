@@ -28,6 +28,10 @@ class BooksQuery extends Query
                 'name' => 'orderBy', 
                 'type' => GraphQL::type('BooksOrderBy'),
             ],
+            'title' => [
+                'name' => 'title', 
+                'type' => Type::string(),
+            ],
         ];
     }
 
@@ -35,6 +39,7 @@ class BooksQuery extends Query
     {
         $query = Book::with("author");
         $joinAuthor = false; 
+
         if(isset($args["orderBy"])) {
             switch($args["orderBy"]) {
                 case "TITLE_DESC": $query->orderBy("title", "DESC"); break;
@@ -49,6 +54,11 @@ class BooksQuery extends Query
                     break;
             }
         }
+
+        if(isset($args["title"])) {
+            $query->where("title", "LIKE", "{$args['title']}%");
+        }
+
         if($joinAuthor) $query->joinAuthor();
         return $query->get();
     }

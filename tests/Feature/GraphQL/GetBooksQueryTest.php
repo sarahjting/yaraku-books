@@ -80,4 +80,18 @@ class GetBooksQueryTest extends TestCase
             $books->sortByDesc("author.family_name")->pluck("id")->toArray()
         );
     }
+
+    public function test_can_retrieve_all_books_filtered_by_title()
+    {
+        $book = factory(\App\Models\Book::class, 10)->create()[5];
+
+        $responses = [
+            $this->callGraphQL("query{ books(title: \"{$book->title}\"){ id title } }"),
+            $this->callGraphQL("query{ books(title: \"" . substr($book->title, 0, 5) . "\"){ id title } }")
+        ];
+        
+        foreach($responses as $response) {
+            $this->assertEquals(count($response["data"]["books"]), 1);
+        }
+    }
 }
