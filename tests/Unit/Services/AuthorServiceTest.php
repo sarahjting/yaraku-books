@@ -53,5 +53,19 @@ class AuthorServiceTest extends TestCase
             $this->assertEquals($result[0]->id, $author->id);
         }
     }
+
+    public function test_can_find_or_create_author()
+    {
+        $rawAuthor = factory(\App\Models\Author::class)->states("raw")->raw();
+        
+        $result1 = $this->authorService->firstOrCreate($rawAuthor);
+        $result2 = $this->authorService->firstOrCreate($rawAuthor);
+
+        $this->assertNotNull($result1);
+        $this->assertNotNull($result2);
+
+        $this->assertEquals($result1->name, $rawAuthor["name"]);
+        $this->assertEquals($result1->id, $result2->id);
+        $this->assertDatabaseHas("authors", ["given_name" => $result1->given_name]);
     }
 }
