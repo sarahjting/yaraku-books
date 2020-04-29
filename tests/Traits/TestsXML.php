@@ -5,7 +5,9 @@ namespace Tests\Traits;
 trait TestsXML
 {
     protected function assertXmlEquals($xml, $string) {
-        $this->assertEquals(substr($xml, 0, 22), "<?xml version=\"1.0\"?>\n");
-        $this->assertEquals(substr($xml, 22, -1), $string);
+        $this->assertEquals($this->filterXml($xml), $this->filterXml($string));
+    }
+    protected function filterXml($xml) {
+        return str_replace(["\n", "<?xml version=\"1.0\"?>"], "", $xml);
     }
 }

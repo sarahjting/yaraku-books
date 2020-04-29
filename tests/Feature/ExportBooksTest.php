@@ -1,0 +1,30 @@
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\TestsXML;
+
+use Tests\TestCase;
+
+class ExportBooksTest extends TestCase
+{
+    use RefreshDatabase, TestsXML;
+
+    public function test_can_export_empty_xml()
+    {
+        $response = $this->get("/export/books");
+
+        $response->assertStatus(200);
+        $this->assertXmlEquals($response->getContent(), "<books/>");
+    }
+
+    public function test_can_export_xml()
+    {
+        $books = factory(\App\Models\Book::class, 10)->create();
+        $response = $this->get("/export/books");
+
+        $response->assertStatus(200);
+        $this->assertXmlEquals($response->getContent(), $books->sortBy("title")->toXML("books")->asXML());
+    }
+}
