@@ -26,8 +26,8 @@ A book-keeping app for Yaraku's coding challenge.
 
 ## Tests
 
--   PHPUnit tests: `phpunit`.
--   Mocha tests: `npm run test`.
+-   PHPUnit tests: `phpunit`
+-   Mocha tests: `npm run test`
 
 ## Using
 
