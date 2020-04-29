@@ -3,7 +3,9 @@
 namespace App\Models\Traits;
 
 use App\Models\Collections\FormattableCollection;
+use App\Models\Interfaces\XMLFormattableInterface;
 
+use App\Utilities\XML\XMLElement;
 use SimpleXMLElement;
 use Str;
 
@@ -24,10 +26,17 @@ trait FormatsEloquentToXML {
         $elementName = $this->xmlElementName();
         $fieldNames = $fields ?: $this->xmlFieldNames();
 
-        $xml = new SimpleXMLElement("<{$elementName}></{$elementName}>");
+        $xml = new XMLElement("<{$elementName}></{$elementName}>");
+        $childNodes = [];
 
         foreach($fieldNames as $fieldName) {
-            $xml->addChild(Str::camel($fieldName), $this->$fieldName);
+            $child = $this->$fieldName;
+            $childName = Str::camel($fieldName);
+            if($child instanceof XMLFormattableInterface) {
+                $xml->addChildElement($child->toXML());
+            } else {
+                $xml->addChild($childName, $child);
+            }
         }
         
         return $xml; 
