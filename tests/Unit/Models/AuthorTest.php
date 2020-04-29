@@ -5,11 +5,11 @@ namespace Tests\Unit\Models;
 use Illuminate\Foundation\Testing\WithFaker;
 
 use Tests\TestCase;
-use App\Models\Author;
+use Tests\Traits\TestsXML;
 
 class AuthorTest extends TestCase
 {
-    use WithFaker;
+    use WithFaker, TestsXML;
 
     public function test_can_get_name()
     {
@@ -36,10 +36,5 @@ class AuthorTest extends TestCase
         $author = factory(\App\Models\Author::class)->make();
 
         $this->assertXmlEquals($author->toXml(["name"])->asXml(), "<author><name>{$author->name}</name></author>");
-    }
-
-    protected function assertXmlEquals($xml, $string) {
-        $this->assertEquals(substr($xml, 0, 22), "<?xml version=\"1.0\"?>\n");
-        $this->assertEquals(substr($xml, 22, -1), $string);
     }
 }
