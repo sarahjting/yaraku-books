@@ -16,7 +16,9 @@ A book-keeping app for Yaraku's coding challenge.
 
 ## Using
 
-Laravel 7, Vue.js
+-   Laravel 7, Vue.js
+-   Requirements:
+    -   php-xml
 
 ## Todo
 
