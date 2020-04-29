@@ -5,6 +5,7 @@ use App\Services\BookService;
 use App\Services\AuthorService;
 
 use App\Models\Collections\XMLFormattableCollection;
+use App\Models\Collections\CSVFormattableCollection;
 
 class ExportController extends Controller
 {
@@ -13,19 +14,43 @@ class ExportController extends Controller
         $authors = $authorService->getByName("");
         return $this->formatResponse("authors", $authors);
     }
+
     public function getBooks(BookService $bookService)
     {
         $books = $bookService->get();
         return $this->formatResponse("books", $books);
     }
+
     private function formatResponse($rootElementName, $data)
     {
-        $fields = request()->get("fields") ? explode(",", request()->get("fields")) : null;
+        switch(request()->header("accept")) {
+            case "text/csv": return $this->formatCSVResponse($data);
+            default: return $this->formatXMLResponse($rootElementName, $data); 
+        }
+    }
 
+    private function formatXMLResponse($rootElementName, $data)
+    {
+        $collection = new XMLFormattableCollection($data);
         return response(
-            (new XMLFormattableCollection($data))->toXML($rootElementName, $fields)->asXML(), 
+            $collection->toXML($rootElementName, $this->getFieldNames())->asXML(), 
             200, 
             [ "Content-Type" => "application/xml" ]
         );
+    }
+
+    private function formatCSVResponse($data)
+    {
+        $collection = new CSVFormattableCollection($data);
+        return response(
+            $collection->toCSV($this->getFieldNames()), 
+            200, 
+            [ "Content-Type" => "text/csv" ]
+        );
+    }
+
+    private function getFieldNames()
+    {
+        return request()->get("fields") ? explode(",", request()->get("fields")) : null;
     }
 }

@@ -4,8 +4,11 @@ namespace Tests\Traits;
 
 trait TestsCSV
 {
-    protected function assertCSVEquals(array $expected, string $csv): void {
-        $this->assertEquals($expected, $this->csvToArray($csv));
+    protected function assertCSVEquals($expected, string $csv): void {
+        $this->assertEquals(
+            !is_array($expected) ? $this->csvToArray($expected) : $expected, 
+            $this->csvToArray($csv)
+        );
     }
 
     protected function csvToArray(string $csv): array {
