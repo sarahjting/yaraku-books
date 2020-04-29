@@ -23,4 +23,10 @@ class Author extends Model implements XMLFormattableInterface
     {
         return "{$this->given_name} {$this->family_name}";
     }
+
+    public function scopeOrderByName($query, $orderByDirection = 'ASC')
+    {
+        return $query->orderBy('family_name', $orderByDirection)
+            ->orderBy('given_name', $orderByDirection);
+    }
 }

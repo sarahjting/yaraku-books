@@ -43,7 +43,7 @@ class AuthorService {
     {
         $authors = Author::query();
         $this->modifyQueryWhereNameLike($authors, $name);
-        return $authors->get();
+        return $authors->orderByName()->get();
     }
 
     public function modifyQueryWhereNameLike(Builder $query, string $name): Builder 
