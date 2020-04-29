@@ -23,12 +23,32 @@ class CSVFormattableCollection extends Collection implements CSVFormattableInter
     {
         $result = [];
         foreach($fieldNames as $fieldName) {
-            $result[] = $this->pluck($fieldName)->map(function($el) {
-                return '"' . str_replace('"', '""', $el) . '"';
-            })->toArray();
+            $result[] = $this->toCSVColumn($fieldName);
         }
-        return implode("\n", array_map(function($el) {
+        $result = $this->csvTranspose($result);
+        $result = $this->csvMatrixToRows($result);
+        $result = $this->csvRowsToString($result);
+        return $result; 
+    }
+
+    protected function csvRowsToString($result)
+    {
+        return implode("\n", $result);
+    }
+
+    protected function toCSVColumn($fieldName) {
+        return $this->pluck($fieldName)->map(function($el) {
+            return '"' . str_replace('"', '""', $el) . '"';
+        })->toArray();
+    }
+
+    protected function csvMatrixToRows($data) {
+        return array_map(function($el) {
             return is_array($el) ? implode(",", $el) : $el;
-        }, array_map(null, ...$result)));
+        }, $data);
+    }
+
+    protected function csvTranspose($array) {
+        return array_map(null, ...$array);
     }
 }
