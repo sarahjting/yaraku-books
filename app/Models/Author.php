@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Interfaces\XMLFormattableInterface;
 
-class Author extends Model
+use App\Models\Traits\FormatsEloquentToXML;
+
+class Author extends Model implements XMLFormattableInterface
 {
+    use FormatsEloquentToXML;
+
     protected $fillable = [
         'given_name', 'family_name'
     ];
