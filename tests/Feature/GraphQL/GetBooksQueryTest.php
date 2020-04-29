@@ -83,15 +83,19 @@ class GetBooksQueryTest extends TestCase
 
     public function test_can_retrieve_all_books_filtered_by_title()
     {
-        $book = factory(\App\Models\Book::class, 10)->create()[5];
+        $books = factory(\App\Models\Book::class, 10)->create();
+        $title = $books[5]->title;
+        $partialTitle = substr($books[5]->title, 0, 5);
 
-        $responses = [
-            $this->callGraphQL("query{ books(title: \"{$book->title}\"){ id title } }"),
-            $this->callGraphQL("query{ books(title: \"" . substr($book->title, 0, 5) . "\"){ id title } }")
-        ];
+        $responseExact = $this->callGraphQL("query{ books(title: \"{$title}\"){ id title } }");
+        $responsePartial = $this->callGraphQL("query{ books(title: \"{$partialTitle}\"){ id title } }");
         
-        foreach($responses as $response) {
-            $this->assertEquals(count($response["data"]["books"]), 1);
+        foreach($responseExact["data"]["books"] as $book) {
+            $this->assertEquals($title, $book["title"]);
+        }
+
+        foreach($responsePartial["data"]["books"] as $book) {
+            $this->assertStringStartsWith($partialTitle, $book["title"]);
         }
     }
 
