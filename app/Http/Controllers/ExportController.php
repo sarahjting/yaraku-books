@@ -5,9 +5,8 @@ use App\Services\BookService;
 
 class ExportController extends Controller
 {
-    public function getBooks()
+    public function getBooks(BookService $bookService)
     {
-        $bookService = new BookService;
         $books = $bookService->get();
 
         $fields = request()->get("fields") ? explode(",", request()->get("fields")) : null;
