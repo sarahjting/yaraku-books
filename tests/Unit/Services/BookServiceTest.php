@@ -98,15 +98,19 @@ class BookServiceTest extends TestCase
 
     public function test_can_list_books_filtered_by_title()
     {
-        $book = factory(\App\Models\Book::class, 10)->create()[5];
-
-        $responses = [
-            $this->bookService->get(["title" => $book->title]),
-            $this->bookService->get(["title" => substr($book->title, 0, 5)]),
-        ];
+        $books = factory(\App\Models\Book::class, 10)->create();
+        $title = $books[5]->title;
+        $partialTitle = substr($books[5]->title, 0, 5);
         
-        foreach($responses as $response) {
-            $this->assertEquals($response->count(), 1);
+        $responseExact = $this->bookService->get(["title" => $title]);
+        $responsePartial = $this->bookService->get(["title" => $partialTitle]);
+
+        foreach($responseExact as $book) {
+            $this->assertEquals($title, $book->title);
+        }
+
+        foreach($responsePartial as $book) {
+            $this->assertStringStartsWith($partialTitle, $book->title);
         }
     }
 }
