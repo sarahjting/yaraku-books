@@ -3,9 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Interfaces\XMLFormattableInterface;
+
+use App\Models\Traits\FormatsEloquentToXML;
 
 class Book extends Model
 {
+    use FormatsEloquentToXML;
+    
+    protected $visible = [
+        'id', 'title'
+    ];
+
     protected $fillable = [
         'title', 'author_id'
     ];
