@@ -39,4 +39,11 @@ class BookTest extends TestCase
 
         $this->assertXmlEquals($book->toXml(null, ["title", "author"])->asXml(), "<book><title>{$book->title}</title><author><id>{$book->author->id}</id><name>{$book->author->name}</name></author></book>");
     }
+    
+    public function test_can_format_to_xml_with_custom_relations()
+    {
+        $book = factory(\App\Models\Book::class)->create();
+
+        $this->assertXmlEquals($book->toXml(null, ["title", "author.given_name"])->asXml(), "<book><title>{$book->title}</title><author><givenName>{$book->author->given_name}</givenName></author></book>");
+    }
 }
