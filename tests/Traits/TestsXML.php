@@ -4,10 +4,10 @@ namespace Tests\Traits;
 
 trait TestsXML
 {
-    protected function assertXmlEquals($xml, $string) {
-        $this->assertEquals($this->filterXml($xml), $this->filterXml($string));
+    protected function assertXMLEquals(string $expectedXML, string $actualXML) {
+        $this->assertEquals($this->filterXml($actualXML), $this->filterXml($expectedXML));
     }
-    protected function filterXml($xml) {
+    protected function filterXML($xml) {
         return str_replace(["\n", "<?xml version=\"1.0\"?>"], "", $xml);
     }
 }

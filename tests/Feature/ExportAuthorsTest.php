@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Traits\TestsXML;
 
 use App\Models\Collections\XMLFormattableCollection;
+use App\Models\Collections\CSVFormattableCollection;
 
 use Tests\TestCase;
 
@@ -18,7 +19,7 @@ class ExportAuthorsTest extends TestCase
         $response = $this->get("/export/authors");
 
         $response->assertStatus(200);
-        $this->assertXmlEquals($response->getContent(), "<authors/>");
+        $this->assertXMLEquals("<authors/>", $response->getContent());
     }
 
     public function test_can_export_xml()
@@ -27,6 +28,6 @@ class ExportAuthorsTest extends TestCase
         $response = $this->get("/export/authors");
 
         $response->assertStatus(200);
-        $this->assertXmlEquals($authors->sortBy("family_name")->toXML("authors")->asXML(), $response->getContent());
+        $this->assertXMLEquals($authors->sortBy("family_name")->toXML("authors")->asXML(), $response->getContent());
     }
 }

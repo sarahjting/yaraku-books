@@ -19,26 +19,35 @@ class XMLFormattableCollectionTest extends TestCase
     {
         $authors = new XMLFormattableCollection(factory(\App\Models\Author::class, 5)->create());
         
-        $this->assertXMLEquals($authors->toXML("authors")->asXml(), "<authors>" . $authors->map(function($author) {
-            return "<author><id>{$author->id}</id><name>{$author->name}</name></author>";
-        })->implode("") . "</authors>");
+        $this->assertXMLEquals(
+            "<authors>" . $authors->map(function($author) {
+                return "<author><id>{$author->id}</id><name>{$author->name}</name></author>";
+            })->implode("") . "</authors>",
+            $authors->toXML("authors")->asXml()
+        );
     }
 
     public function test_can_format_collection_into_xml_with_custom_fields() 
     {
         $authors = new XMLFormattableCollection(factory(\App\Models\Author::class, 5)->create());
 
-        $this->assertXMLEquals($authors->toXML("authors", ["given_name"])->asXml(), "<authors>" . $authors->map(function($author) {
-            return "<author><givenName>{$author->given_name}</givenName></author>";
-        })->implode("") . "</authors>");
+        $this->assertXMLEquals(
+            "<authors>" . $authors->map(function($author) {
+                return "<author><givenName>{$author->given_name}</givenName></author>";
+            })->implode("") . "</authors>",
+            $authors->toXML("authors", ["given_name"])->asXml()
+        );
     }
 
     public function test_can_format_collection_into_xml_with_nested_fields() 
     {
         $books = new XMLFormattableCollection(factory(\App\Models\Book::class, 5)->create());
 
-        $this->assertXMLEquals($books->toXML("books", ["title", "author.name"])->asXml(), "<books>" . $books->map(function($book) {
-            return "<book><title>{$book->title}</title><author><name>{$book->author->name}</name></author></book>";
-        })->implode("") . "</books>");
+        $this->assertXMLEquals(
+            "<books>" . $books->map(function($book) {
+                return "<book><title>{$book->title}</title><author><name>{$book->author->name}</name></author></book>";
+            })->implode("") . "</books>",
+            $books->toXML("books", ["title", "author.name"])->asXml()
+        );
     }
 }

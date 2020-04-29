@@ -29,13 +29,13 @@ class AuthorTest extends TestCase
     {
         $author = factory(\App\Models\Author::class)->create();
 
-        $this->assertXmlEquals($author->toXml()->asXml(), "<author><id>{$author->id}</id><name>{$author->name}</name></author>");
+        $this->assertXMLEquals("<author><id>{$author->id}</id><name>{$author->name}</name></author>", $author->toXml()->asXml());
     }
 
     public function test_can_format_to_xml_with_custom_fields()
     {
         $author = factory(\App\Models\Author::class)->create();
 
-        $this->assertXmlEquals($author->toXml(null, ["given_name"])->asXml(), "<author><givenName>{$author->given_name}</givenName></author>");
+        $this->assertXMLEquals("<author><givenName>{$author->given_name}</givenName></author>", $author->toXml(null, ["given_name"])->asXml());
     }
 }

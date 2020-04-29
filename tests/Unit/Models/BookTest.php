@@ -16,37 +16,40 @@ class BookTest extends TestCase
     {
         $book = factory(\App\Models\Book::class)->create();
 
-        $this->assertXmlEquals($book->toXml()->asXml(), "<book><id>{$book->id}</id><title>{$book->title}</title></book>");
+        $this->assertXMLEquals("<book><id>{$book->id}</id><title>{$book->title}</title></book>", $book->toXml()->asXml());
     }
 
     public function test_can_format_to_xml_with_custom_element()
     {
         $book = factory(\App\Models\Book::class)->create();
 
-        $this->assertXmlEquals($book->toXml("foo")->asXml(), "<foo><id>{$book->id}</id><title>{$book->title}</title></foo>");
+        $this->assertXMLEquals("<foo><id>{$book->id}</id><title>{$book->title}</title></foo>", $book->toXml("foo")->asXml());
     }
 
     public function test_can_format_to_xml_with_custom_fields()
     {
         $book = factory(\App\Models\Book::class)->create();
 
-        $this->assertXmlEquals($book->toXml(null, ["created_at"])->asXml(), "<book><createdAt>{$book->created_at}</createdAt></book>");
+        $this->assertXMLEquals("<book><createdAt>{$book->created_at}</createdAt></book>", $book->toXml(null, ["created_at"])->asXml());
     }
 
     public function test_can_format_to_xml_with_relations()
     {
         $book = factory(\App\Models\Book::class)->create();
 
-        $this->assertXmlEquals($book->toXml(null, ["title", "author"])->asXml(), "<book><title>{$book->title}</title><author><id>{$book->author->id}</id><name>{$book->author->name}</name></author></book>");
+        $this->assertXMLEquals(
+            "<book><title>{$book->title}</title><author><id>{$book->author->id}</id><name>{$book->author->name}</name></author></book>", 
+            $book->toXml(null, ["title", "author"])->asXml()
+        );
     }
     
     public function test_can_format_to_xml_with_custom_relations()
     {
         $book = factory(\App\Models\Book::class)->create();
 
-        $this->assertXmlEquals(
-            $book->toXml(null, ["title", "author.given_name", "author.family_name"])->asXml(), 
-            "<book><title>{$book->title}</title><author><givenName>{$book->author->given_name}</givenName><familyName>{$book->author->family_name}</familyName></author></book>"
+        $this->assertXMLEquals(
+            "<book><title>{$book->title}</title><author><givenName>{$book->author->given_name}</givenName><familyName>{$book->author->family_name}</familyName></author></book>",
+            $book->toXml(null, ["title", "author.given_name", "author.family_name"])->asXml()
         );
     }
 }

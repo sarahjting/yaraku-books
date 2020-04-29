@@ -18,7 +18,7 @@ class ExportBooksTest extends TestCase
         $response = $this->get("/export/books");
 
         $response->assertStatus(200);
-        $this->assertXmlEquals($response->getContent(), "<books/>");
+        $this->assertXMLEquals("<books/>", $response->getContent());
     }
 
     public function test_can_export_xml()
@@ -27,6 +27,6 @@ class ExportBooksTest extends TestCase
         $response = $this->get("/export/books");
 
         $response->assertStatus(200);
-        $this->assertXmlEquals($response->getContent(), $books->sortBy("title")->toXML("books")->asXML());
+        $this->assertXMLEquals($books->sortBy("title")->toXML("books")->asXML(), $response->getContent());
     }
 }
