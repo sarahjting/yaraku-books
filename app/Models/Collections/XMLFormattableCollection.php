@@ -3,14 +3,12 @@
 namespace App\Models\Collections;
 
 use Illuminate\Database\Eloquent\Collection;
-
 use App\Models\Interfaces\XMLFormattableInterface;
-use App\Models\Traits\FormatsToXML;
 
 use SimpleXMLElement;
 use App\Utilities\XML\XMLElement;
 
-class FormattableCollection extends Collection implements XMLFormattableInterface
+class XMLFormattableCollection extends Collection implements XMLFormattableInterface
 {
     var $xmlElementName;
 

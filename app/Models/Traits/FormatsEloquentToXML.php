@@ -65,11 +65,4 @@ trait FormatsEloquentToXML {
         return $xml; 
     }
 
-    public function newCollection(array $models = [])
-    {   
-        $collection = new FormattableCollection($models);
-        $collection->xmlElementName(Str::camel($this->getTable()));
-        return $collection;
-    }
-
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Services\BookService;
 use App\Services\AuthorService;
 
+use App\Models\Collections\XMLFormattableCollection;
+
 class ExportController extends Controller
 {
     public function getAuthors(AuthorService $authorService)
@@ -21,7 +23,7 @@ class ExportController extends Controller
         $fields = request()->get("fields") ? explode(",", request()->get("fields")) : null;
 
         return response(
-            $data->toXML($rootElementName, $fields)->asXML(), 
+            (new XMLFormattableCollection($data))->toXML($rootElementName, $fields)->asXML(), 
             200, 
             [ "Content-Type" => "application/xml" ]
         );
