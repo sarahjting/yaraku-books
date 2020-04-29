@@ -21,8 +21,14 @@ class CSVFormattableCollection extends Collection implements CSVFormattableInter
 
     public function toCSVBody(array $fieldNames): string
     {
-        return $this->map(function($el) use($fieldNames) {
-            return implode(",", $el->only($fieldNames));
-        })->implode("\n");
+        $result = [];
+        foreach($fieldNames as $fieldName) {
+            $result[] = $this->pluck($fieldName)->map(function($el) {
+                return '"' . str_replace('"', '""', $el) . '"';
+            })->toArray();
+        }
+        return implode("\n", array_map(function($el) {
+            return is_array($el) ? implode(",", $el) : $el;
+        }, array_map(null, ...$result)));
     }
 }
