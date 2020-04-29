@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Arr;
 use SimpleXMLElement;
 
-class FormattableCollectionTest extends TestCase
+class XMLFormattableCollectionTest extends TestCase
 {
     use RefreshDatabase, TestsXML;
 
