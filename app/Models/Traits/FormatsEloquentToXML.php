@@ -11,7 +11,7 @@ trait FormatsEloquentToXML {
 
     public function xmlFieldNames(): array
     {
-        return array_keys($this->attributes);
+        return $this->visible;
     }
 
     public function xmlElementName(): string

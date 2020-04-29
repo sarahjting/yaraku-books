@@ -10,6 +10,10 @@ use App\Models\Traits\FormatsEloquentToXML;
 class Author extends Model implements XMLFormattableInterface
 {
     use FormatsEloquentToXML;
+    
+    protected $visible = [
+        'id', 'name',
+    ];
 
     protected $fillable = [
         'given_name', 'family_name'
