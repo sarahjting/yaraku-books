@@ -21,10 +21,10 @@ trait FormatsEloquentToXML {
         return Str::singular($this->getTable());
     }
 
-    public function toXML(array $fields = null): SimpleXMLElement
+    public function toXML(string $elementName = null, array $fieldNames = null): SimpleXMLElement
     {
-        $elementName = $this->xmlElementName();
-        $fieldNames = $fields ?: $this->xmlFieldNames();
+        $elementName = $elementName ?: $this->xmlElementName();
+        $fieldNames = $fieldNames ?: $this->xmlFieldNames();
 
         $xml = new XMLElement("<{$elementName}></{$elementName}>");
         $childNodes = [];

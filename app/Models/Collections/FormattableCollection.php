@@ -22,12 +22,12 @@ class FormattableCollection extends Collection implements XMLFormattableInterfac
         return $this->xmlElementName;
     }
 
-    public function toXML(array $fields = []): SimpleXMLElement
+    public function toXML(string $elementName = null, array $fieldNames = null): SimpleXMLElement
     {
-        $elementName = $this->xmlElementName();
+        $elementName = $elementName ?: $this->xmlElementName();
 
         $xml = new XMLElement("<{$elementName} />");
-        foreach($this as $item) $xml->addChildElement($item->toXML($fields));
+        foreach($this as $item) $xml->addChildElement($item->toXML(null, $fieldNames));
         
         return $xml; 
     }

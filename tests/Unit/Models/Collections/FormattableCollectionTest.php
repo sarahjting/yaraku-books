@@ -26,7 +26,7 @@ class FormattableCollectionTest extends TestCase
     public function test_can_format_collection_into_xml_with_custom_fields() 
     {
         $authors = factory(\App\Models\Author::class, 5)->create();
-        $this->assertXMLEquals($authors->toXML(["given_name"])->asXml(), "<authors>" . $authors->map(function($author) {
+        $this->assertXMLEquals($authors->toXML(null, ["given_name"])->asXml(), "<authors>" . $authors->map(function($author) {
             return "<author><givenName>{$author->given_name}</givenName></author>";
         })->implode("") . "</authors>");
     }

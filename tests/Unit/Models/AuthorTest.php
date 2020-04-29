@@ -36,6 +36,6 @@ class AuthorTest extends TestCase
     {
         $author = factory(\App\Models\Author::class)->create();
 
-        $this->assertXmlEquals($author->toXml(["given_name"])->asXml(), "<author><givenName>{$author->given_name}</givenName></author>");
+        $this->assertXmlEquals($author->toXml(null, ["given_name"])->asXml(), "<author><givenName>{$author->given_name}</givenName></author>");
     }
 }

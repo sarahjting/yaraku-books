@@ -6,5 +6,5 @@ use SimpleXMLElement;
 
 interface XMLFormattableInterface {
     public function xmlElementName(): string;
-    public function toXML(array $fields = []): SimpleXMLElement;
+    public function toXML(?string $elementName = null, ?array $fieldName = null): SimpleXMLElement;
 }
