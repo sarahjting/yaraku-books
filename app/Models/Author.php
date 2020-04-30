@@ -19,6 +19,11 @@ class Author extends Model implements XMLFormattableInterface
         'given_name', 'family_name'
     ];
 
+    public function books()
+    {
+        return $this->hasMany(\App\Models\Book::class);
+    }
+
     public function getNameAttribute() 
     {
         return "{$this->given_name} {$this->family_name}";
