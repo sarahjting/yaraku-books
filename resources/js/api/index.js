@@ -43,13 +43,13 @@ const api = {
         ).then(data => (data.errors ? data : data.data.deleteBook));
     },
 
-    updateAuthor: function(id, author) {
+    updateBook: function(id, book) {
         return callGraphQL(
-            `mutation($id: Int!, $author: AuthorInput!) {
-                updateAuthor(id: $id, author: $author){ id name }
+            `mutation($id: Int!, $book: BookInput!) {
+                updateBook(id: $id, book: $book){ id title author{id name} }
             }`,
-            { id, author }
-        ).then(data => (data.errors ? data : data.data.updateAuthor));
+            { id, book }
+        ).then(data => (data.errors ? data : data.data.updateBook));
     }
 };
 

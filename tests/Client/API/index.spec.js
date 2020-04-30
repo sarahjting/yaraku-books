@@ -9,7 +9,7 @@ describe("GraphQL API", () => {
         expect(Array.isArray(books)).toBeTruthy();
     });
 
-    describe("create and delete a book", () => {
+    describe("create, update, delete a book", () => {
         it("should create a book", async () => {
             const rawBook = {
                 title: "Foo Bar",
@@ -26,19 +26,25 @@ describe("GraphQL API", () => {
             expect(book.author.name).toBe(rawBook.author.name);
         });
 
+        it("should update a book", async () => {
+            const rawBook = {
+                title: "Hello World",
+                author: { name: "Foobert Barney" }
+            };
+            const updatedBook = await api.updateBook(book.id, rawBook);
+
+            expect(typeof updatedBook).toBe("object");
+            expect(updatedBook.errors).not.toBeDefined();
+
+            expect(updatedBook.id).toBe(book.id);
+            expect(updatedBook.title).toBe(rawBook.title);
+            expect(updatedBook.author.id).toBeDefined();
+            expect(updatedBook.author.name).toBe(rawBook.author.name);
+        });
+
         it("should delete a book", async () => {
             let result = await api.deleteBook(book.id);
             expect(result).toBe(true);
         });
-    });
-
-    it("should update author", async () => {
-        const rawAuthor = { name: "Foobert Barney" };
-        const author = await api.updateAuthor(book.author.id, rawAuthor);
-
-        expect(typeof author).toBe("object");
-        expect(author.errors).not.toBeDefined();
-        expect(author.id).toBe(book.author.id);
-        expect(author.name).toBe(rawAuthor.name);
     });
 });

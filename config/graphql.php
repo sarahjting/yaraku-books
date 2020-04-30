@@ -25,7 +25,6 @@ return [
                 "createBook" => \App\GraphQL\Mutations\CreateBookMutation::class,
                 "deleteBook" => \App\GraphQL\Mutations\DeleteBookMutation::class,
                 "updateBook" => \App\GraphQL\Mutations\UpdateBookMutation::class,
-                "updateAuthor" => \App\GraphQL\Mutations\UpdateAuthorMutation::class,
             ],
             'middleware' => [],
             'method' => ['get', 'post'],
