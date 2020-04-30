@@ -24,28 +24,31 @@ const api = {
             books{ id title author{ id name } }
         }`).then(data => (data.errors ? data : data.data.books));
     },
-    createBook: function(bookInput) {
+
+    createBook: function(book) {
         return callGraphQL(
             `mutation($book: BookInput!) {
                 createBook(book: $book){ id title author{id name} }
             }`,
-            { book: bookInput }
+            { book }
         ).then(data => (data.errors ? data : data.data.createBook));
     },
-    deleteBook: function(bookId) {
+
+    deleteBook: function(id) {
         return callGraphQL(
             `mutation($id: Int!) {
                 deleteBook(id: $id)
             }`,
-            { id: bookId }
+            { id }
         ).then(data => (data.errors ? data : data.data.deleteBook));
     },
-    updateAuthor: function(authorId, authorInput) {
+
+    updateAuthor: function(id, author) {
         return callGraphQL(
             `mutation($id: Int!, $author: AuthorInput!) {
                 updateAuthor(id: $id, author: $author){ id name }
             }`,
-            { id: authorId, author: authorInput }
+            { id, author }
         ).then(data => (data.errors ? data : data.data.updateAuthor));
     }
 };
