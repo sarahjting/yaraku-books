@@ -6,15 +6,29 @@ describe("API", () => {
         const books = await api.books();
         expect(Array.isArray(books)).toBeTruthy();
     });
-    it("should create a book via GraphQL", async () => {
-        const rawBook = {
-            title: "Foo Bar",
-            author: { name: "Foodinand Bartholomew" }
-        };
-        let book = await api.createBook(rawBook);
 
-        expect(typeof book).toBe("object");
-        expect(book.title).toBe(rawBook.title);
-        expect(book.author.name).toBe(rawBook.author.name);
+    describe("create and delete a book", () => {
+        let book;
+
+        it("should create a book via GraphQL", async () => {
+            const rawBook = {
+                title: "Foo Bar",
+                author: { name: "Foodinand Bartholomew" }
+            };
+            book = await api.createBook(rawBook);
+
+            expect(typeof book).toBe("object");
+            expect(book.errors).not.toBeDefined();
+
+            expect(book.id).toBeDefined();
+            expect(book.title).toBe(rawBook.title);
+            expect(book.author.id).toBeDefined();
+            expect(book.author.name).toBe(rawBook.author.name);
+        });
+
+        it("should delete a book via GraphQL", async () => {
+            let result = await api.deleteBook(book.id);
+            expect(result).toBe(true);
+        });
     });
 });

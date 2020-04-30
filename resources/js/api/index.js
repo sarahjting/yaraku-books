@@ -23,6 +23,22 @@ const api = {
         return callGraphQL(`query{
             books{ id title author{ id name } }
         }`).then(data => (data.errors ? data : data.data.books));
+    },
+    createBook: function(bookInput) {
+        return callGraphQL(
+            `mutation($book: BookInput!) {
+                createBook(book: $book){ id title author{id name} }
+            }`,
+            { book: bookInput }
+        ).then(data => (data.errors ? data : data.data.createBook));
+    },
+    deleteBook: function(bookId) {
+        return callGraphQL(
+            `mutation($id: Int!) {
+                deleteBook(id: $id)
+            }`,
+            { id: bookId }
+        ).then(data => (data.errors ? data : data.data.deleteBook));
     }
 };
 
