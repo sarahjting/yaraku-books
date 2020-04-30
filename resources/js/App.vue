@@ -18,16 +18,14 @@ import DataTable from "./components/DataTable";
 export default {
     name: "App",
 
-    beforeMount() {
-        // api.books()
-        //     .then(data => data.data.data)
-        //     .then(data => console.log(data));
-    },
+    beforeMount() {},
 
     components: {
         TopBar,
         DataTable
     },
+
+    computed: {},
 
     data: () => ({})
 };
