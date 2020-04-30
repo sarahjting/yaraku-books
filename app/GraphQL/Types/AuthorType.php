@@ -25,6 +25,16 @@ class AuthorType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'description' => 'The name of the author',
             ],
+            'givenName' => [
+                'type' => Type::nonNull(Type::string()),
+                'description' => 'The given name of the author',
+                'alias' => 'given_name'
+            ],
+            'familyName' => [
+                'type' => Type::nonNull(Type::string()),
+                'description' => 'The family name of the author',
+                'alias' => 'family_name'
+            ],
         ];
     }
 }
