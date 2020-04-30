@@ -36,6 +36,22 @@ class BookService {
         ]);
     }
 
+    public function update(Book $book, array $input): Book 
+    {
+        $updateArray = [];
+        if(isset($input["author"])) {
+            $author = $this->authorService->firstOrCreate($input["author"]);
+            $updateArray["author_id"] = $author->id;
+        }
+        if(isset($input["title"])) {
+            $updateArray["title"] = $input["title"];
+        }
+        if(count($updateArray)) {
+            $book->update($updateArray);
+        }
+        return $book;
+    }
+
     public function get(array $filters = [], string $orderBy = "TITLE_ASC"): Collection 
     {
         $query = Book::with("author");

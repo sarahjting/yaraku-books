@@ -58,6 +58,28 @@ class BookServiceTest extends TestCase
             ]);
     }
 
+    public function test_can_update_book()
+    {
+        $book = factory(\App\Models\Book::class)->create();
+        $author = factory(\App\Models\Author::class)->create();
+        $rawBook = factory(\App\Models\Book::class)->raw();
+
+        $this->authorService->shouldReceive('firstOrCreate')->once()->andReturn($author);
+        
+        $book = $this->bookService->update($book, [
+            "title" => $rawBook["title"],
+            "author" => [
+                "name" => $author->name
+            ]
+        ]);
+
+        $this->assertDatabaseHas("books", [
+                "id" => $book->id,
+                "title" => $rawBook["title"],
+                "author_id" => $author->id,
+            ]);
+    }
+
     public function test_can_list_books()
     {
         $books = $this->bookService->get();
