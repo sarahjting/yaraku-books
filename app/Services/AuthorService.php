@@ -41,7 +41,7 @@ class AuthorService {
 
     public function getByName(string $name):? Collection 
     {
-        $authors = Author::query()->whereHas('books');
+        $authors = Author::query();
         $this->modifyQueryWhereNameLike($authors, $name);
         return $authors->orderByName()->get();
     }
