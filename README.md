@@ -12,6 +12,19 @@ A book-keeping app for Yaraku's coding challenge.
     ```
     composer install
     ```
+1. Generate app key.
+    ```
+    php artisan key:generate
+    ```
+1. Copy `.env.example` to `.env` and set up your database settings per your requirements.
+    ```
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=
+    DB_USERNAME=
+    DB_PASSWORD=
+    ```
 1. Migrate & seed database.
     ```
     php artisan migrate:refresh --seed
@@ -26,7 +39,7 @@ A book-keeping app for Yaraku's coding challenge.
     ```
 1. For a locally hosted version, put your server up with [Valet](https://laravel.com/docs/7.x/valet) or [Homestead](https://laravel.com/docs/7.x/homestead).
 
-    By default, the GraphQL endpoint will be at `https://127.0.0.1/graphql`, the GraphiQL playground will be at `https://127.0.0.1/graphiql`, and the frontend cient will be at `https://127.0.0.1/`.
+    By default, the GraphQL endpoint will be at `https://127.0.0.1/graphql`, the GraphiQL playground will be at `https://127.0.0.1/graphiql`, and the frontend clent will be at `https://127.0.0.1/`.
 
 ## Tests
 
