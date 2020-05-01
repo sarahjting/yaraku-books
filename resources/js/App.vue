@@ -17,16 +17,12 @@ import DataTable from "./components/DataTable";
 
 export default {
     name: "App",
-
-    beforeMount() {},
-
     components: {
         TopBar,
         DataTable
     },
-
-    computed: {},
-
-    data: () => ({})
+    beforeMount() {
+        this.$store.dispatch("loadBooks");
+    }
 };
 </script>

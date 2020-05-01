@@ -9,12 +9,15 @@
                 mobile-breakpoint="0"
             >
                 <template v-slot:item.author="{ item }">
-                    {{ item.author }}
+                    {{ item.author.familyName }}, {{ item.author.givenName }}
                     <v-icon small class="ml-1" @click="() => {}">
                         mdi-magnify
                     </v-icon>
                 </template>
                 <template v-slot:item.actions>
+                    <v-icon small @click="() => {}">
+                        mdi-pencil
+                    </v-icon>
                     <v-icon small @click="() => {}">
                         mdi-delete
                     </v-icon>
@@ -30,12 +33,16 @@ export default {
 
     data: () => ({
         tableHeaders: [
-            { text: "ID", value: "id" },
             { text: "Title", value: "title" },
             {
                 text: "Author",
                 value: "author",
-                sort: function(a, b) {}
+                sort: function(a, b) {
+                    const [aSortable, bSortable] = [a, b].map(i =>
+                        (i.familyName + "," + i.givenName).toLowerCase()
+                    );
+                    return aSortable > bSortable ? 1 : -1;
+                }
             },
             {
                 text: "Actions",
@@ -43,24 +50,13 @@ export default {
                 sortable: false,
                 align: "center"
             }
-        ],
-        tableBody: [
-            {
-                id: 1,
-                title: "Hello world 1",
-                author: "Foo bar 3"
-            },
-            {
-                id: 2,
-                title: "Hello world 2",
-                author: "Foo bar 2"
-            },
-            {
-                id: 3,
-                title: "Hello world 3",
-                author: "Foo bar 1"
-            }
         ]
-    })
+    }),
+
+    computed: {
+        tableBody: function() {
+            return this.$store.state.books;
+        }
+    }
 };
 </script>
