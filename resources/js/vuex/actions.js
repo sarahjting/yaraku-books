@@ -16,5 +16,12 @@ export default {
         api.createBook(book).then(book => {
             dispatch("loadBooks");
         });
+    },
+
+    deleteBook({ commit, dispatch }, bookId) {
+        commit("setLoading", true);
+        api.deleteBook(bookId).then(result => {
+            dispatch("loadBooks");
+        });
     }
 };

@@ -5,7 +5,8 @@ let mockApi;
 jest.mock("../../../../resources/js/api/index", () => {
     mockApi = {
         books: jest.fn(async () => mockBooks),
-        createBook: jest.fn(async () => mockBooks[0])
+        createBook: jest.fn(async () => mockBooks[0]),
+        deleteBook: jest.fn(async () => false)
     };
     return () => mockApi;
 });
@@ -25,12 +26,20 @@ describe("Vuex Actions", () => {
         expect(commit).toHaveBeenCalledWith("setBooks", mockBooks);
         expect(commit).toHaveBeenCalledWith("setLoading", false);
     });
-    test("loads books", async () => {
+    test("creates books", async () => {
         const commit = jest.fn();
         const dispatch = jest.fn();
 
         await actions.createBook({ commit, dispatch });
         expect(mockApi.createBook).toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith("loadBooks");
+    });
+    test("deletes books", async () => {
+        const commit = jest.fn();
+        const dispatch = jest.fn();
+
+        await actions.deleteBook({ commit, dispatch });
+        expect(mockApi.deleteBook).toHaveBeenCalled();
         expect(dispatch).toHaveBeenCalledWith("loadBooks");
     });
 });
