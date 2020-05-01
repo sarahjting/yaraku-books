@@ -9,18 +9,16 @@
                 mobile-breakpoint="0"
             >
                 <template v-slot:item.author="{ item }">
-                    {{ item.author.familyName }}, {{ item.author.givenName }}
+                    {{ item.author.givenName }} {{ item.author.familyName }}
                     <v-icon small class="ml-1" @click="() => {}">
                         mdi-magnify
                     </v-icon>
                 </template>
-                <template v-slot:item.actions>
+                <template v-slot:item.actions="{ item }">
                     <v-icon small @click="() => {}">
                         mdi-pencil
                     </v-icon>
-                    <v-icon small @click="() => {}">
-                        mdi-delete
-                    </v-icon>
+                    <DeleteBookButton :book="item" />
                 </template>
             </v-data-table>
         </v-col>
@@ -28,8 +26,12 @@
 </template>
 
 <script>
+import DeleteBookButton from "./Buttons/DeleteBookButton.vue";
+
 export default {
     name: "DataTable",
+
+    components: { DeleteBookButton },
 
     data: () => ({
         tableHeaders: [
