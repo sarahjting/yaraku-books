@@ -1,9 +1,13 @@
 <template>
     <v-app>
         <v-row align="center" justify="center">
-            <v-col cols="10">
+            <v-col cols="10" align="center">
                 <TopBar />
-                <DataTable />
+                <v-progress-circular
+                    v-if="$store.state.isLoading"
+                    indeterminate
+                />
+                <DataTable v-if="!$store.state.isLoading" />
             </v-col>
         </v-row>
     </v-app>
