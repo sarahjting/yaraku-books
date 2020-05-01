@@ -2,6 +2,8 @@
 
 A book-keeping app for Yaraku's coding challenge.
 
+View the live deployment here: https://yaraku-books.herokuapp.com/
+
 ## Installation
 
 1. Clone the repo.
@@ -39,15 +41,55 @@ A book-keeping app for Yaraku's coding challenge.
     ```
 1. For a locally hosted version, put your server up with [Valet](https://laravel.com/docs/7.x/valet) or [Homestead](https://laravel.com/docs/7.x/homestead).
 
-    By default, the GraphQL endpoint will be at `https://127.0.0.1/graphql`, the GraphiQL playground will be at `https://127.0.0.1/graphiql`, and the frontend clent will be at `https://127.0.0.1/`.
+    By default, the GraphQL endpoint will be at `https://127.0.0.1/graphql`, the GraphiQL playground will be at `https://127.0.0.1/graphiql`, and the frontend client will be at `https://127.0.0.1/`.
 
 ## Tests
 
 -   PHPUnit tests: `phpunit`
 -   Mocha tests: `npm run test`
 
-## Using
+## Tech
 
--   Laravel 7, Vue.js
+-   Technologies used:
+    -   Backend: PHP, Laravel 7, GraphQL (graphql-laravel)
+    -   Backend testing: PHPUnit
+    -   Frontend: Vue, Vuex, Vuetify
+    -   Frontend testing: Jest
 -   Requirements:
-    -   php-xml
+    -   Requires the `php-xml` php extension.
+
+## Usage
+
+Documentation and a playground for the backend's GraphQL API can be found at `/graphiql`, or at the following live deployment: https://yaraku-books.herokuapp.com/graphiql
+
+Some example queries:
+
+-   Get a list of books:
+
+```
+query {
+    books {
+        title author { name }
+    }
+}
+```
+
+-   Get a list of books sorted by author, where the author's name starts with "C":
+
+```
+query {
+    books(orderBy:AUTHOR_ASC, author:"C") {
+        title author { name }
+    }
+}
+```
+
+-   Get a list of books starting with "A", sorted by title:
+
+```
+query {
+    books(orderBy:TITLE_ASC, title:"A") {
+     title author { name }
+    }
+}
+```
