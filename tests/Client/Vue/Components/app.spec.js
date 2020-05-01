@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import App from "../../../../resources/js/App.vue";
 
-describe("Component", () => {
+describe("App", () => {
     let wrapper;
     let actions;
 
