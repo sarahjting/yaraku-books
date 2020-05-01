@@ -9,29 +9,7 @@
         <v-card>
             <v-card-title class="headline">Add Book</v-card-title>
             <v-card-text>
-                <v-form v-model="valid" ref="form">
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-text-field
-                                    v-model="book.title"
-                                    :rules="validationRules.title"
-                                    label="Title"
-                                    required
-                                ></v-text-field>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <v-text-field
-                                    v-model="book.author.name"
-                                    :rules="validationRules.author"
-                                    label="Author"
-                                    required
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-form>
+                <BookForm :book="book" ref="form" />
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -47,32 +25,25 @@
 </template>
 
 <script>
+import BookForm from "../Forms/BookForm.vue";
 export default {
     name: "CreateBookButton",
+    components: {
+        BookForm
+    },
     data: () => ({
         dialog: false,
-        valid: false,
         book: {
             title: "",
             author: {
                 name: ""
             }
-        },
-        validationRules: {
-            author: [
-                v => !!v || "Author is required",
-                v =>
-                    (v && v.trim().split(" ").length > 1) ||
-                    "Must have given and family name"
-            ],
-            title: [v => !!v || "Title is required"]
         }
     }),
     methods: {
         submitForm: function() {
-            if (!this.valid) return;
+            if (!this.$refs.form.valid) return;
             this.$store.dispatch("createBook", this.book);
-            this.$refs.form.reset();
             this.dialog = false;
         }
     }
