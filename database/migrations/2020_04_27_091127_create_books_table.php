@@ -15,7 +15,7 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string("title")->collate("utf8mb4_unicode_ci")->index();
+            $table->string("title", 100)->collate("utf8mb4_unicode_ci")->index();
             $table->integer("author_id")->index()->unsigned()->references("authors");
             $table->timestamps();
         });

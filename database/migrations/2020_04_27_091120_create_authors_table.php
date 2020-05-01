@@ -15,8 +15,8 @@ class CreateAuthorsTable extends Migration
     {
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
-            $table->string("given_name")->collate("utf8mb4_unicode_ci")->index();
-            $table->string("family_name")->collate("utf8mb4_unicode_ci");
+            $table->string("given_name", 100)->collate("utf8mb4_unicode_ci")->index();
+            $table->string("family_name", 100)->collate("utf8mb4_unicode_ci");
             $table->timestamps();
 
             $table->unique(["family_name", "given_name"]);
