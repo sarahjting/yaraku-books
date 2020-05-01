@@ -38,7 +38,7 @@
                 <v-btn color="green darken-1" text @click="dialog = false"
                     >Cancel</v-btn
                 >
-                <v-btn color="green darken-1" text dark @click="dialog = false"
+                <v-btn color="green darken-1" text dark @click="submitForm"
                     >Add</v-btn
                 >
             </v-card-actions>
@@ -47,17 +47,18 @@
 </template>
 
 <script>
+const defaultBook = {
+    title: "",
+    author: {
+        name: ""
+    }
+};
 export default {
     name: "CreateBookButton",
     data: () => ({
         dialog: false,
         valid: false,
-        book: {
-            title: "",
-            author: {
-                name: ""
-            }
-        },
+        book: { ...defaultBook },
         validationRules: {
             author: [
                 v => !!v || "Author is required",
@@ -66,6 +67,14 @@ export default {
             ],
             title: [v => !!v || "Title is required"]
         }
-    })
+    }),
+    methods: {
+        submitForm: function() {
+            if (!this.valid) return;
+            this.$store.dispatch("createBook", this.book);
+            this.book = { ...defaultBook };
+            this.dialog = false;
+        }
+    }
 };
 </script>

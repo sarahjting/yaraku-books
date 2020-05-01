@@ -9,5 +9,12 @@ export default {
             commit("setLoading", false);
             return books;
         });
+    },
+
+    createBook({ commit, dispatch }, book) {
+        commit("setLoading", true);
+        api.createBook(book).then(book => {
+            dispatch("loadBooks");
+        });
     }
 };
