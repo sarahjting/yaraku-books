@@ -90,7 +90,7 @@ export default {
 
     methods: {
         searchAuthor: function(book) {
-            this.$store.state.filter = book.author.givenName;
+            this.$store.state.filter = `${book.author.givenName} ${book.author.familyName}`;
             this.$store.state.filterBy = `Author`;
         }
     }
