@@ -48,13 +48,17 @@ class ExportAuthorsTest extends TestCase
     public function test_can_export_csv()
     {
         factory(\App\Models\Author::class, 10)->create();
-        $response = $this->get("/export/authors?fields=id,name", [
-            "accept" => "text/csv"
-        ]);
-
-        $response->assertStatus(200);
-
         $authors = new CSVFormattableCollection(\App\Models\Author::orderByName()->get());
-        $this->assertCSVEquals($authors->toCSV(["id", "name"]), $response->getContent());
+        $responses = [
+            $response = $this->get("/export/authors?fields=id,name", [
+                "accept" => "text/csv"
+            ]),
+            $response = $this->get("/export/authors?fields=id,name&format=csv"),
+        ];
+
+        foreach($responses as $response) {
+            $response->assertStatus(200);
+            $this->assertCSVEquals($authors->toCSV(["id", "name"]), $response->getContent());
+        }
     }
 }

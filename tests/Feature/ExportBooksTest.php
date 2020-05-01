@@ -44,13 +44,18 @@ class ExportBooksTest extends TestCase
     public function test_can_export_csv()
     {
         factory(\App\Models\Book::class, 10)->create();
-        $response = $this->get("/export/books?fields=id,title,author.name", [
-            "accept" => "text/csv"
-        ]);
-
-        $response->assertStatus(200);
-
         $books = new CSVFormattableCollection(\App\Models\Book::orderBy('title')->get());
-        $this->assertCSVEquals($books->toCSV(["id", "title", "author.name"]), $response->getContent());
+        
+        $responses = [
+                $this->get("/export/books?fields=id,title,author.name", [
+                    "accept" => "text/csv"
+                ]),
+                $this->get("/export/books?fields=id,title,author.name&format=csv")
+            ];
+
+        foreach($responses as $response) {
+            $response->assertStatus(200);
+            $this->assertCSVEquals($books->toCSV(["id", "title", "author.name"]), $response->getContent());
+        }
     }
 }
