@@ -9,7 +9,7 @@
         <v-card>
             <v-card-title class="headline">Add Book</v-card-title>
             <v-card-text>
-                <v-form v-model="valid">
+                <v-form v-model="valid" ref="form">
                     <v-container>
                         <v-row>
                             <v-col cols="12">
@@ -47,23 +47,23 @@
 </template>
 
 <script>
-const defaultBook = {
-    title: "",
-    author: {
-        name: ""
-    }
-};
 export default {
     name: "CreateBookButton",
     data: () => ({
         dialog: false,
         valid: false,
-        book: { ...defaultBook },
+        book: {
+            title: "",
+            author: {
+                name: ""
+            }
+        },
         validationRules: {
             author: [
                 v => !!v || "Author is required",
                 v =>
-                    v.split(" ").length > 1 || "Must have given and family name"
+                    (v && v.trim().split(" ").length > 1) ||
+                    "Must have given and family name"
             ],
             title: [v => !!v || "Title is required"]
         }
@@ -72,7 +72,7 @@ export default {
         submitForm: function() {
             if (!this.valid) return;
             this.$store.dispatch("createBook", this.book);
-            this.book = { ...defaultBook };
+            this.$refs.form.reset();
             this.dialog = false;
         }
     }
