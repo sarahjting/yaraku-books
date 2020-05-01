@@ -10,14 +10,21 @@
             >
                 <template v-slot:item.author="{ item }">
                     {{ item.author.givenName }} {{ item.author.familyName }}
-                    <v-icon small class="ml-1" @click="() => {}">
+                    <v-icon
+                        small
+                        class="ml-1"
+                        @click="
+                            () => {
+                                $store.state.filter = item.author.givenName;
+                                $store.state.filterBy = `Author`;
+                            }
+                        "
+                    >
                         mdi-magnify
                     </v-icon>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-icon small @click="() => {}">
-                        mdi-pencil
-                    </v-icon>
+                    <EditBookButton :book="item" />
                     <DeleteBookButton :book="item" />
                 </template>
             </v-data-table>
@@ -27,11 +34,12 @@
 
 <script>
 import DeleteBookButton from "./Buttons/DeleteBookButton.vue";
+import EditBookButton from "./Buttons/EditBookButton.vue";
 
 export default {
     name: "DataTable",
 
-    components: { DeleteBookButton },
+    components: { DeleteBookButton, EditBookButton },
 
     data: () => ({
         tableHeaders: [
