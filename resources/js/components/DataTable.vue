@@ -7,6 +7,8 @@
                 class="elevation-1"
                 fixed-header
                 mobile-breakpoint="0"
+                disable-pagination
+                hide-default-footer
             >
                 <template v-slot:item.author="{ item }">
                     {{ item.author.givenName }} {{ item.author.familyName }}
