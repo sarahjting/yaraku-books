@@ -11,7 +11,7 @@
                 hide-default-footer
             >
                 <template v-slot:item.author="{ item }">
-                    {{ item.author.givenName }} {{ item.author.familyName }}
+                    {{ item.author.familyName }}, {{ item.author.givenName }}
                     <v-icon
                         small
                         class="ml-1"
