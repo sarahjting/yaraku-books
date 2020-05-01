@@ -12,4 +12,16 @@ describe("Vuex Mutations", () => {
         mutations.setBooks(state, updatedBooks);
         expect(state.books).toBe(updatedBooks);
     });
+    test("can set filter", () => {
+        const state = { filter: "Author" };
+        const updatedFilter = "Book";
+        mutations.setFilter(state, updatedFilter);
+        expect(state.filter).toBe(updatedFilter);
+    });
+    test("can set filterBy", () => {
+        const state = { filterBy: "" };
+        const updatedFilterBy = "Foo";
+        mutations.setFilterBy(state, updatedFilterBy);
+        expect(state.filterBy).toBe(updatedFilterBy);
+    });
 });

@@ -1,4 +1,6 @@
 export default {
     isLoading: true,
-    books: []
+    books: [],
+    filterBy: "Title",
+    filter: ""
 };
