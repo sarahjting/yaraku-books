@@ -12,6 +12,10 @@ A book-keeping app for Yaraku's coding challenge.
     ```
     composer install
     ```
+1. Migrate & seed database.
+    ```
+    php artisan migrate:refresh --seed
+    ```
 1. Install npm dependencies.
     ```
     npm i
