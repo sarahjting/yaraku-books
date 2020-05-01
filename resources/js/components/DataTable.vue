@@ -55,7 +55,29 @@ export default {
 
     computed: {
         tableBody: function() {
-            return this.$store.state.books;
+            let { filter, filterBy } = this.$store.state;
+            filter = filter.toLowerCase();
+            return this.$store.state.books.filter(x => {
+                if (!filter) return true;
+                if (filterBy === "Title") {
+                    return (
+                        x.title.substr(0, filter.length).toLowerCase() ===
+                        filter
+                    );
+                } else {
+                    return (
+                        x.author.givenName
+                            .substr(0, filter.length)
+                            .toLowerCase() === filter ||
+                        x.author.familyName
+                            .substr(0, filter.length)
+                            .toLowerCase() === filter ||
+                        `${x.author.givenName} ${x.author.familyName}`
+                            .substr(0, filter.length)
+                            .toLowerCase() === filter
+                    );
+                }
+            });
         }
     }
 };

@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuex from "vuex";
+import Vuetify from "vuetify";
 
 import CreateBookButton from "../../../../resources/js/components/Buttons/CreateBookButton.vue";
 
@@ -13,6 +14,7 @@ describe("CreateBookButton", () => {
             createBook: jest.fn()
         };
         wrapper = mount(CreateBookButton, {
+            vuetify: new Vuetify({}),
             store: new Vuex.Store({ actions })
         });
     });
