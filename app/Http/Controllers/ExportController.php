@@ -23,8 +23,8 @@ class ExportController extends Controller
 
     private function formatResponse($rootElementName, $data)
     {
-        $format = request()->get("format");
-        if(!$format) $format = request()->header("accept");
+        $format = strtolower(request()->get("format"));
+        if(!$format) $format = strtolower(request()->header("accept"));
         switch($format) {
             case "text/csv": case "csv": return $this->formatCSVResponse($data);
             default: return $this->formatXMLResponse($rootElementName, $data); 
