@@ -38,7 +38,7 @@
                 <v-btn color="green darken-1" text @click="dialog = false"
                     >Cancel</v-btn
                 >
-                <v-btn color="green darken-1" text dark @click="submitForm"
+                <v-btn color="green darken-1" dark @click="submitForm"
                     >Add</v-btn
                 >
             </v-card-actions>
