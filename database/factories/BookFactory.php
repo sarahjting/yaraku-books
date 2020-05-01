@@ -6,7 +6,7 @@ use Faker\Generator as Faker;
 
 $factory->define(\App\Models\Book::class, function (Faker $faker) {
     return [
-        "title" => $faker->sentence(3),
+        "title" => implode(" ", array_map('ucfirst', $this->faker->words(3))),
         "author_id" => function() {
             return factory(\App\Models\Author::class)->create();
         }
@@ -15,7 +15,6 @@ $factory->define(\App\Models\Book::class, function (Faker $faker) {
 
 $factory->state(\App\Models\Book::class, "raw", function (Faker $faker) {
     return [
-        "title" => $faker->sentence(3),
         "author" => [
             "name" => $faker->name()
         ],
