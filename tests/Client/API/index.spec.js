@@ -1,4 +1,17 @@
-import api from "../../../resources/js/api/index";
+import apiModule from "../../../resources/js/api/index";
+import axios from "axios";
+import httpAdapter from "axios/lib/adapters/http";
+import https from "https";
+
+const api = apiModule(
+    axios.create({
+        adapter: httpAdapter,
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        })
+    }),
+    process.env.APP_URL
+);
 
 describe("GraphQL API", () => {
     let book;
@@ -23,7 +36,7 @@ describe("GraphQL API", () => {
             expect(book.id).toBeDefined();
             expect(book.title).toBe(rawBook.title);
             expect(book.author.id).toBeDefined();
-            expect(book.author.name).toBe(rawBook.author.name);
+            expect(book.author.givenName).toBe("Foodinand");
         });
 
         it("should update a book", async () => {
@@ -39,7 +52,7 @@ describe("GraphQL API", () => {
             expect(updatedBook.id).toBe(book.id);
             expect(updatedBook.title).toBe(rawBook.title);
             expect(updatedBook.author.id).toBeDefined();
-            expect(updatedBook.author.name).toBe(rawBook.author.name);
+            expect(updatedBook.author.givenName).toBe("Foobert");
         });
 
         it("should delete a book", async () => {
