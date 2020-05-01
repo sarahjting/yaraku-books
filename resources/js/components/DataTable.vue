@@ -13,12 +13,7 @@
                     <v-icon
                         small
                         class="ml-1"
-                        @click="
-                            () => {
-                                $store.state.filter = item.author.givenName;
-                                $store.state.filterBy = `Author`;
-                            }
-                        "
+                        @click="() => searchAuthor(item)"
                     >
                         mdi-magnify
                     </v-icon>
@@ -88,6 +83,13 @@ export default {
                     );
                 }
             });
+        }
+    },
+
+    methods: {
+        searchAuthor: function(book) {
+            this.$store.state.filter = book.author.givenName;
+            this.$store.state.filterBy = `Author`;
         }
     }
 };

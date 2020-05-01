@@ -59,4 +59,10 @@ describe("CreateBookButton", () => {
         expect(wrapper.vm.tableBody.length).toBe(1);
         expect(wrapper.vm.tableBody[0]).toStrictEqual(state.books[2]);
     });
+
+    test("filters books by author on click", async () => {
+        wrapper.find(".mdi-magnify").trigger("click");
+        expect(state.filterBy).toBe("Author");
+        expect(state.filter).toContain(state.books[0].author.givenName);
+    });
 });
