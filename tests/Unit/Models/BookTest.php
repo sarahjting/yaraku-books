@@ -52,4 +52,19 @@ class BookTest extends TestCase
             $book->toXml(null, ["title", "author.given_name", "author.family_name"])->asXml()
         );
     }
+
+    public function test_can_generate_xml_fields_array()
+    {
+        $book = factory(\App\Models\Book::class)->create();
+
+        $this->assertEquals([
+            "id" => [],
+            "title" => [],
+            "author" => [
+                "id",
+                "name",
+                "books.id",
+            ]
+        ], $book->xmlFieldNamesToArray(["id", "title", "author.id", "author.name", "author.books.id"]));
+    }
 }

@@ -38,4 +38,11 @@ class AuthorTest extends TestCase
 
         $this->assertXMLEquals("<author><givenName>{$author->given_name}</givenName></author>", $author->toXml(null, ["given_name"])->asXml());
     }
+
+    public function test_can_format_field_to_xml()
+    {
+        $book = factory(\App\Models\Book::class)->create();
+
+        $this->assertXMLEquals("<books><book><id>{$book->id}</id></book></books>", $book->author->fieldToXML("books", ["id"])->asXml());
+    }
 }

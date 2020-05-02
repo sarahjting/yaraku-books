@@ -2,10 +2,11 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Collections\FormattableCollection;
+use App\Models\Collections\XMLFormattableCollection;
 use App\Models\Interfaces\XMLFormattableInterface;
 
 use App\Utilities\XML\XMLElement;
+
 use SimpleXMLElement;
 use Str;
 
@@ -29,40 +30,48 @@ trait FormatsEloquentToXML {
         $xml = new XMLElement("<{$elementName}></{$elementName}>");
         $childNodes = [];
 
-        // TODO: refactor
-        foreach($fieldNames as $fieldName) {
-            $indexOfFirstPeriod = strpos($fieldName, ".");
-            if($indexOfFirstPeriod !== FALSE) {
-
-                $nestedName = substr($fieldName, 0, $indexOfFirstPeriod);
-                if(isset($childNodes[$nestedName])) continue;
-                $childNodes[$nestedName] = true; 
-
-                // why does array_map take a function as first parameter but array_filter takes it as second
-                $nestedFields = array_map(
-                    function($el) use($nestedName) {
-                        return substr($el, strlen($nestedName) + 1);
-                    }, array_filter($fieldNames, function($el) use($nestedName) { 
-                        return substr($el, 0, strlen($nestedName) + 1) === "{$nestedName}."; 
-                    })
-                );
-                $xml->addChildElement($this->$nestedName->toXML(Str::camel($nestedName), $nestedFields));
-
-            } else {
-
-                $child = $this->$fieldName;
-                $childName = Str::camel($fieldName);
-                if($child instanceof XMLFormattableInterface) {
-                    $xml->addChildElement($child->toXML());
-                } else {
-                    $xml->addChild($childName, $child);
-                }
-
-            }
-
+        $fieldNameArray = $this->xmlFieldNamesToArray($fieldNames);
+        foreach($fieldNameArray as $fieldName => $fieldChildren) {
+            $xml->addChildElement($this->fieldToXML($fieldName, $fieldChildren));
         }
         
         return $xml; 
+    }
+
+    public function xmlFieldNamesToArray(array $fieldNames): array
+    {
+        // this only needs to go one layer deep; further handling is passed off the child node
+        $array = [];
+        foreach($fieldNames as $fieldName) {
+
+            $splitName = explode(".", $fieldName, 2);
+            if(count($splitName) === 2) {
+                list($prefix, $suffix) = $splitName;
+                $array[$prefix] = $array[$prefix] ?? [];
+                $array[$prefix][] = $suffix;
+            } else {
+                $array[$splitName[0]] = [];
+            }
+
+        }
+        return $array;
+
+    }
+
+    public function fieldToXML(string $fieldName, array $fieldChildren): SimpleXMLElement {
+        $childNode = null;
+        $childValue = $this->$fieldName;
+        $childName = Str::camel($fieldName);
+
+        if($childValue instanceof \Illuminate\Database\Eloquent\Collection) {
+            $childValue = new XMLFormattableCollection($childValue);
+        }
+        
+        if($childValue instanceof XMLFormattableInterface) {
+            return $childValue->toXML($childName, $fieldChildren);
+        } else {
+            return new XMLElement("<{$childName}>{$childValue}</{$childName}>");
+        }
     }
 
 }
