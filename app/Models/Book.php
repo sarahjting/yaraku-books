@@ -7,7 +7,7 @@ use App\Models\Interfaces\XMLFormattableInterface;
 
 use App\Models\Traits\FormatsEloquentToXML;
 
-class Book extends Model
+class Book extends Model implements XMLFormattableInterface
 {
     use FormatsEloquentToXML;
     
@@ -27,7 +27,7 @@ class Book extends Model
     public function scopeOrderByAuthor($query, $orderByDirection) 
     {
         $query->orderBy("authors.family_name", $orderByDirection)
-            ->orderBy("authors.family_name", $orderByDirection);
+            ->orderBy("authors.given_name", $orderByDirection);
     }
 
     public function scopeJoinAuthor($query) 
